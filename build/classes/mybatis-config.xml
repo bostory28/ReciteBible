@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<!-- DB접속정보 값을 가지고 있는 파일 설정 -->
+	<properties resource="db.properties" />
+
+	<!-- 별명 부여 -->
+	<typeAliases>
+		 <typeAlias type="vo.YearsVO" alias="Years"/>
+		 <typeAlias type="vo.AdminsVO" alias="Admins"/>
+		 <typeAlias type="vo.VersesVO" alias="Verses"/>
+		 <typeAlias type="vo.MonthsVO" alias="Months"/>
+		 <typeAlias type="vo.UpdateVO" alias="Update"/>
+		 <typeAlias type="vo.UpdateVO2" alias="Update2"/>
+	</typeAliases>
+
+	<!-- DB접속 정보 셋팅 -->
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" /><!--Managed- WAS에서제공되는 
+				Transaction사용 -->
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}" />
+				<property name="url" value="${url}" /><!--properties File에서동적으로읽어오기 -->
+				<property name="username" value="${username}" />
+				<property name="password" value="${password}" />
+			</dataSource>
+		</environment>
+	</environments>
+
+	<!-- mapper.xml 파일 설정 -->
+	<mappers>
+		<mapper resource="mapper/yearsMapper.xml" />
+		<mapper resource="mapper/adminsMapper.xml" />
+		<mapper resource="mapper/loginMapper.xml" />
+		<mapper resource="mapper/versesMapper.xml" />
+		<mapper resource="mapper/serverMapper.xml" />
+		<mapper resource="mapper/updatesMapper.xml" />
+		<mapper resource="mapper/backupMapper.xml" />
+	</mappers>
+
+</configuration>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="update">
+	<select id="getUpdates" parameterType="map" resultType="Update2">
+		SELECT 
+		    *
+		FROM 
+		    (SELECT 
+		        ROWNUM RW, 
+		        UPDATEDATE_SQ, 
+		        LASTDATE, 
+		        UPDATE_TYPE, 
+		        VERSES_SQ, 
+		        VERSE_TITLE_KR, 
+		        VERSE_TITLE_EN, 
+		        VERSE_SECTION, 
+		        VERSE_KR, 
+		        VERSE_EN, 
+		        YR, 
+		        MON,
+		        ISPUSHED 
+		    FROM 
+		        (SELECT * FROM UPDATEDATES ORDER BY UPDATEDATE_SQ DESC))
+		WHERE
+		    RW >= #{start} AND RW &lt;= #{end}
+	</select>
+	<select id="getAllRowCount" resultType="int">
+		SELECT COUNT(*) FROM UPDATEDATES
+	</select>
+</mapper>

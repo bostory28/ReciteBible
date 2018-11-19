@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="years">
+	<select id="getYears" resultType="Years">
+		SELECT * FROM YEARS ORDER BY YR
+	</select>
+	<insert id="addYear" parameterType="int">
+		INSERT INTO YEARS(YR) VALUES(#{newYr})
+	</insert>
+	<insert id="deleteYear" parameterType="int">
+		DELETE FROM YEARS WHERE YR = #{yr}
+	</insert>
+</mapper>

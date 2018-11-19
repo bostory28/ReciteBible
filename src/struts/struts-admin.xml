@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<package name="admin" namespace="/" extends="default">
+		<result-types>
+			<result-type name="json" class="org.apache.struts2.json.JSONResult"></result-type>
+		</result-types>
+		
+		<action name="admin" class="admin.AdminsAction">
+			<interceptor-ref name="loginInterceptorStack"/>
+			<result name="success">/jsp/listadmin.jsp</result>
+		</action>
+		<action name="addAdmin" class="admin.AdminsAction" method="addAdmin">
+			<interceptor-ref name="loginInterceptorStack"/>
+			<result name="success">/jsp/listadmin.jsp</result>
+		</action>
+		<action name="deleteAdmin" class="admin.AdminsAction" method="deleteAdmin">
+			<interceptor-ref name="loginInterceptorStack"/>
+			<result name="success">/jsp/listadmin.jsp</result>
+		</action>
+	</package>
+</struts>

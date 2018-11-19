@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<package name="login" namespace="/" extends="default">
+		<result-types>
+			<result-type name="json" class="org.apache.struts2.json.JSONResult"></result-type>
+		</result-types>
+		
+		<action name="loginForm">
+            <result>/jsp/login.jsp</result>
+        </action>
+		<action name="login" class="login.LoginAction" method="login">
+			<result name="success" type="redirect">/index.do</result>
+			<result name="input" type="redirect">/loginForm.do</result>
+		</action>
+		<action name="logout" class="login.LoginAction" method="logout">
+			<result name="success" type="redirect">/loginForm.do</result>
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="verses">
+	<select id="getVerses" parameterType="map" resultType="Verses">
+		SELECT
+		    *
+		FROM
+		    (SELECT 
+		        ROWNUM RW, 
+		        VERSES_SQ, 
+		        VERSE_TITLE_KR, 
+		        VERSE_TITLE_EN, 
+		        VERSE_KR, 
+		        VERSE_EN, 
+		        VERSION, 
+		        VERSE_SECTION,
+		        YR, 
+		        MON
+		    FROM
+		        (SELECT  
+		                *
+		        FROM    VERSES
+		        ORDER BY 
+		                YR DESC, 
+		                MON DESC,
+		                VERSE_TITLE_EN DESC))
+		WHERE
+		    RW >= #{start} AND RW &lt;= #{end}
+	</select>
+	<select id="getAllRowCount" resultType="int">
+		SELECT COUNT(*) FROM VERSES
+	</select>
+	<select id="getVerse" parameterType="int" resultType="Verses">
+		SELECT VERSES_SQ, 
+			   VERSE_TITLE_KR, 
+			   VERSE_TITLE_EN, 
+    		   VERSE_KR, 
+    		   VERSE_EN, 
+    		   VERSION, 
+    		   VERSE_SECTION, 
+    		   YR, 
+    		   MON 
+		FROM   VERSES
+		WHERE  VERSES_SQ = #{verses_sq}
+	</select>
+	<select id="getYears" resultType="Years">
+		SELECT YR FROM YEARS ORDER BY YR DESC
+	</select>
+	<select id="getMonths" resultType="Months">
+		SELECT MON FROM MONTHS ORDER BY MON ASC
+	</select>
+	<insert id="addVerse" parameterType="Verses">
+		INSERT INTO VERSES(VERSES_SQ,
+						   verse_title_kr,
+						   verse_title_en,
+						   verse_section,
+						   verse_kr,
+						   verse_en,
+						   version,
+						   mon,
+						   yr)
+		VALUES(VERSES_SQ.NEXTVAL, 
+			  #{verse_title_kr}, 
+			  #{verse_title_en},
+			  #{verse_section},  
+			  #{verse_kr}, 
+			  #{verse_en}, 
+			  #{version}, 
+			  #{mon},
+			  #{yr})
+	</insert>
+	
+	<update id="updateVerse" parameterType="Verses">
+		UPDATE VERSES
+		SET VERSE_TITLE_KR = #{verse_title_kr},
+			VERSE_TITLE_EN = #{verse_title_en},
+			VERSE_KR = #{verse_kr},
+			VERSE_EN = #{verse_en},
+			VERSE_SECTION = #{verse_section},
+			VERSION = #{version},
+			MON = #{mon},
+			YR = #{yr}
+		WHERE
+			VERSES_SQ = #{verses_sq}
+	</update>
+	<update id="deleteVerse" parameterType="int">
+		DELETE VERSES WHERE VERSES_SQ = #{verses_sq}
+	</update>
+	<select id="getLastVerseSq" resultType="int">
+		SELECT MAX(VERSES_SQ) FROM VERSES
+	</select>
+	<insert id="updateDateOfAddVerse" parameterType="Verses">
+		INSERT INTO UPDATEDATES 
+		VALUES(UPDATEDATE_SQ.NEXTVAL, 
+			  to_char(sysdate,'yyyymmdd hh24:mi:ss'),
+			  1, 
+			  #{verses_sq},
+			  #{verse_title_kr}, 
+			  #{verse_title_en},
+			  #{verse_section},  
+			  #{verse_kr}, 
+			  #{verse_en}, 
+			  #{yr},
+			  #{mon},
+			  0)
+	</insert>
+	<insert id="updateDateOfUpdateVerse" parameterType="Verses">
+		INSERT INTO UPDATEDATES 
+		VALUES(UPDATEDATE_SQ.NEXTVAL, 
+			  to_char(sysdate,'yyyymmdd hh24:mi:ss'),
+			  2, 
+			  #{verses_sq},
+			  #{verse_title_kr}, 
+			  #{verse_title_en},
+			  #{verse_section},  
+			  #{verse_kr}, 
+			  #{verse_en}, 
+			  #{yr},
+			  #{mon},
+			  0)
+
+	</insert>
+	<insert id="updateDateOfDeleteVerse" parameterType="Verses">
+		INSERT INTO UPDATEDATES 
+		VALUES(UPDATEDATE_SQ.NEXTVAL, 
+		      to_char(sysdate,'yyyymmdd hh24:mi:ss'),
+			  3, 
+			  #{verses_sq},
+			  #{verse_title_kr}, 
+			  #{verse_title_en},
+			  #{verse_section},  
+			  #{verse_kr}, 
+			  #{verse_en}, 
+			  #{yr},
+			  #{mon},
+			  0)
+	</insert>
+	<select id="getAllVersesNotPushed" resultType="Update">
+		SELECT 
+		        VERSES_SQ, 
+		        VERSE_TITLE_KR, 
+		        VERSE_TITLE_EN, 
+		        VERSE_KR, 
+		        VERSE_EN, 
+		        UPDATE_TYPE,
+		        LASTDATE
+		    FROM
+		        UPDATEDATES
+		WHERE
+		    ISPUSHED = 0
+		ORDER BY
+			LASTDATE DESC
+	</select>
+	<update id="updatePush" parameterType="int">
+		UPDATE UPDATEDATES SET ISPUSHED = 1 WHERE VERSES_SQ = #{verses_sq}
+	</update>
+</mapper>

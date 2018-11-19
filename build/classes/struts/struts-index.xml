@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
+	<package name="index" namespace="/" extends="default">
+		<result-types>
+			<result-type name="json" class="org.apache.struts2.json.JSONResult"></result-type>
+		</result-types>
+		
+		<action name="index" class="index.IndexAction" method="index">
+			<interceptor-ref name="loginInterceptorStack"/>
+			<result name="success">index.jsp</result>
+		</action>
+		<action name="backup" class="index.IndexAction" method="backup">
+			<interceptor-ref name="loginInterceptorStack"/>
+			<result name="success">index.jsp</result>
+		</action>
+		<action name="serverOn" class="index.IndexAction" method="startServer">
+			<interceptor-ref name="loginInterceptorStack"/>
+			<result name="success">index.jsp</result>
+		</action>
+		<action name="serverOff" class="index.IndexAction" method="stopServer">
+			<interceptor-ref name="loginInterceptorStack"/>
+			<result name="success">index.jsp</result>
+		</action>
+		<action name="goAddVerseForm" class="index.IndexAction" method="goAddVerseForm">
+			<interceptor-ref name="loginInterceptorStack"/>
+			<result name="success">/jsp/addverseform.jsp</result>
+		</action>
+		<action name="addVerse" class="index.IndexAction" method="addVerse">
+			<interceptor-ref name="loginInterceptorStack"/>
+			<result name="success">index.jsp</result>
+		</action>
+		<action name="goUpdateVerseForm" class="index.IndexAction" method="goUpdateVerseForm">
+			<interceptor-ref name="loginInterceptorStack"/>
+			<result name="success">/jsp/updateverseform.jsp</result>
+		</action>
+		<action name="updateVerse" class="index.IndexAction" method="updateVerse">
+			<interceptor-ref name="loginInterceptorStack"/>
+			<result name="success">index.jsp</result>
+		</action>
+		<action name="deleteVerse" class="index.IndexAction" method="deleteVerse">
+			<interceptor-ref name="loginInterceptorStack"/>
+			<result name="success">index.jsp</result>
+		</action>
+		<action name="push" class="index.IndexAction" method="push">
+			<interceptor-ref name="loginInterceptorStack"/>
+			<result name="success">index.jsp</result>
+		</action>
+	</package>
+</struts>

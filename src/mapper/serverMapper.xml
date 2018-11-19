@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="server">
+	<select id="getLastestUpdateDate" resultType="String">
+		SELECT MAX(LASTDATE) FROM UPDATEDATES
+	</select>
+	<select id="getAllVerses" resultType="Verses">
+		SELECT VERSES_SQ, 
+			   VERSE_TITLE_KR, 
+			   VERSE_TITLE_EN, 
+    		   VERSE_KR, 
+    		   VERSE_EN, 
+    		   VERSION, 
+    		   VERSE_SECTION,
+    		   YR, 
+    		   MON 
+		FROM   VERSES
+		ORDER BY YR, 
+				 MON,
+				 VERSE_TITLE_EN
+	</select>
+	<select id="getLastestUpdate" resultType="Update">
+		SELECT MAX(LASTDATE) LASTDATE	
+		FROM   UPDATEDATES 
+	</select>
+	
+	<select id="getUpdateHistory" parameterType="String" resultType="Update">
+		SELECT LASTDATE,
+			   UPDATE_TYPE,
+			   VERSES_SQ,
+			   VERSE_TITLE_KR, 
+			   VERSE_TITLE_EN, 
+    		   VERSE_KR, 
+    		   VERSE_EN, 
+    		   VERSE_SECTION,
+    		   YR, 
+    		   MON 
+		FROM   UPDATEDATES
+		WHERE
+			   LASTDATE > #{updateDateFromClient}
+		ORDER BY
+			   LASTDATE
+	</select>
+	
+	<select id="getVersesUpdated" parameterType="int" resultType="Verses">
+		SELECT VERSES_SQ, 
+			   VERSE_TITLE_KR, 
+			   VERSE_TITLE_EN, 
+    		   VERSE_KR, 
+    		   VERSE_EN, 
+    		   VERSION, 
+    		   VERSE_SECTION,
+    		   YR, 
+    		   MON 
+		FROM   VERSES
+		WHERE  VERSES_SQ = #{verses_sq}
+	</select>
+	
+	<select id="getVersesNotUpdated" parameterType="String" resultType="Update">
+		SELECT * FROM UPDATEDATES WHERE LASTDATE > #{latestDateFromClient}
+		ORDER BY UPDATE_TYPE, YR DESC, MON DESC, VERSE_TITLE_EN
+	</select>
+</mapper>

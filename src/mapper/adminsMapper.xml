@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admins">
+	<select id="getAdmins" resultType="Admins">
+		SELECT * FROM ADMINS ORDER BY ADMINS_SQ
+	</select>
+	<insert id="addAdmin" parameterType="Admins">
+		INSERT INTO ADMINS(ADMINS_SQ, ID, PW, NAME) VALUES (ADMINS_SQ.NEXTVAL, #{id}, #{pw}, #{name})
+	</insert>
+	<delete id="deleteAdmin" parameterType="int">
+		DELETE FROM ADMINS WHERE ADMINS_SQ = #{admins_sq}
+	</delete>
+</mapper>

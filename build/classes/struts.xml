@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
+	<package name="default" namespace="/" extends="struts-default">
+		<interceptors>
+			<!-- 로그인 인터셉터 정의 -->
+		   	<interceptor name="loginInterceptor" class="common.LoginInterceptor" />
+			
+			<!-- 로그인 확인시 사용 인터셉터 스택 정의 -->
+         	<interceptor-stack name="loginInterceptorStack">
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="loginInterceptor" />
+			</interceptor-stack>
+		</interceptors>
+        
+        <!-- 순서 주의 (interceptor -> default action -> global result) -->
+        <default-action-ref name="home" />   
+        
+        <!-- 모든 액션에서 "login"이 리턴되었을 때의 경로 (LoginInterceptor에서 리턴함) -->
+ 		<global-results>
+  			<result name="login" type="redirect">/loginForm.do</result>
+  		</global-results>
+  		
+  		<!-- 메인 화면 -->
+        <action name="home">
+            <result>/jsp/login.jsp</result>
+        </action>
+	</package>
+	
+   	<include file="struts/struts-year.xml"/>
+	<include file="struts/struts-index.xml"/>
+	<include file="struts/struts-admin.xml"/>
+	<include file="struts/struts-login.xml"/>
+	<include file="struts/struts-update.xml"/>
+   	
+</struts>
